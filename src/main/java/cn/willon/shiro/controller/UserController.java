@@ -1,7 +1,4 @@
 package cn.willon.shiro.controller;
-/*
- * Copyright (C) 2009-2018 Hangzhou 2Dfire Technology Co., Ltd. All rights reserved
- */
 
 import cn.willon.shiro.bean.User;
 import cn.willon.shiro.dto.ResponseDTO;

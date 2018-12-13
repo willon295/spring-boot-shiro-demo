@@ -1,7 +1,5 @@
 package cn.willon.shiro.exception;
-/*
- * Copyright (C) 2009-2018 Hangzhou 2Dfire Technology Co., Ltd. All rights reserved
- */
+
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

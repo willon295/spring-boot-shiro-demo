@@ -1,7 +1,4 @@
 package cn.willon.shiro.controller;
-/*
- * Copyright (C) 2009-2018 Hangzhou 2Dfire Technology Co., Ltd. All rights reserved
- */
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,4 @@
 package cn.willon.shiro.bean;
-/*
- * Copyright (C) 2009-2018 Hangzhou 2Dfire Technology Co., Ltd. All rights reserved
- */
 
 import lombok.Data;
 

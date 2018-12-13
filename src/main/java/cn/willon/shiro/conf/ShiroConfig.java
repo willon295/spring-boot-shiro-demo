@@ -1,7 +1,4 @@
 package cn.willon.shiro.conf;
-/*
- * Copyright (C) 2009-2018 Hangzhou 2Dfire Technology Co., Ltd. All rights reserved
- */
 
 import cn.willon.shiro.conf.realm.CustomRealm;
 import org.apache.shiro.realm.text.IniRealm;

@@ -1,0 +1,24 @@
+server:
+  port: 8080
+shiro:
+  ini-conf-path: "classpath:conf/users.ini"
+  use-ini-realm: false
+spring:
+  aop:
+    proxy-target-class: true
+    auto: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
+    database: 2
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 10
+mybatis:
+  mapper-locations: classpath:mapper/*.xml

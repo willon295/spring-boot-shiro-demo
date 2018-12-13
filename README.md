@@ -88,7 +88,7 @@ domain: *
 
 ## 架构及流程
 
-![](/images/shiro_arc.png)
+![](http://blog.willon.cn/images/shiro_arc.png)
 
 1. SecurityManager 是整个框架的核心 , 包含 `Authenticator`  ,  `Authorizor` , `SessionManager` , `CacheManager` , `Realm`  ,  `SessioinDAO`
 2.  Realm 提供  Authenticator 的 认证需要的信息源 , 提供  Authorizor 授权信息源
@@ -96,7 +96,7 @@ domain: *
 
 ### 认证流程
 
-![](/images/shiro_authentication.png)
+![](http://blog.willon.cn/images/shiro_authentication.png)
 
 1. 获取用户的token信息
 2. Subject.login() , 底层是在 realm 中比较信息差异
@@ -104,7 +104,7 @@ domain: *
 
 ### 授权流程
 
-![](/images/shiro_authorizer.png)
+![](/http://blog.willon.cn/images/shiro_authorizer.png)
 
 1. 获取用户的认证信息
 2. 获取用户的授权信息

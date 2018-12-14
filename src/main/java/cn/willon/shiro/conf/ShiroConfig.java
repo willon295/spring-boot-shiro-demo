@@ -44,44 +44,23 @@ public class ShiroConfig {
     private Boolean useIniRealm;
 
 
-    /**
-     * IniRealm
-     */
-    @Bean
-    public IniRealm iniRealm() {
-        return new IniRealm(iniConfPath);
-    }
-
-    /**
-     * 这个方法必须是静态的,在类加载之前就完成实例化,  否则Spring启动异常, 属性注入异常
-     */
-    @Bean
-    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
 
 
     /**
-     * 自定义的Realm
-     */
-    @Bean
-    public CustomRealm customRealm() {
-        return new CustomRealm();
-    }
-
-
-    /**
-     * WebSecurityManager Shiro 的核心组件
+     * WebSecurityManager 组件
      */
     @Bean
     public WebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(useIniRealm ? iniRealm() : customRealm());
-        securityManager.setSessionManager(defaultSessionManager());
-        securityManager.setCacheManager(redisCacheManager());
+        securityManager.setSessionManager(sessionManager());
+        securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
 
+    /**
+     * 配置过滤请求路径
+     */
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(WebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -97,6 +76,76 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         return shiroFilterFactoryBean;
+    }
+
+    /**
+     * IniRealm
+     */
+    @Bean
+    public IniRealm iniRealm() {
+        return new IniRealm(iniConfPath);
+    }
+
+
+    /**
+     * 自定义的Realm
+     */
+    @Bean
+    public CustomRealm customRealm() {
+        return new CustomRealm();
+    }
+
+    @Bean
+    public SessionManager sessionManager() {
+        DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
+        defaultWebSessionManager.setSessionDAO(sessionDAO());
+        defaultWebSessionManager.setSessionIdCookieEnabled(true);
+        return defaultWebSessionManager;
+    }
+
+
+    /**
+     *  SessionDAO
+     */
+    @Bean
+    public RedisSessionDAO sessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        return redisSessionDAO;
+    }
+
+    /**
+     * 使用redis管理缓存 , 主要是存储用户的授权信息
+     */
+    @Bean
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
+    }
+
+    /**
+     * redisManager
+     */
+    @Bean
+    public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost(redisHost);
+        redisManager.setDatabase(database);
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMinIdle(minIdle);
+        redisManager.setJedisPoolConfig(jedisPoolConfig);
+        return redisManager;
+    }
+
+
+    /**
+     * 管理shiroBean的生命周期 , 这个方法必须是静态的,在类加载之前就完成实例化,  否则Spring启动异常, 属性注入异常
+     */
+    @Bean
+    public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
     }
 
 
@@ -119,47 +168,4 @@ public class ShiroConfig {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
         return authorizationAttributeSourceAdvisor;
     }
-
-    @Bean
-    public SessionManager defaultSessionManager() {
-        DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
-        defaultWebSessionManager.setSessionDAO(redisSessionDAO());
-        defaultWebSessionManager.setSessionIdCookieEnabled(true);
-        return defaultWebSessionManager;
-    }
-
-
-    /**
-     * 配置redisManager
-     */
-    @Bean
-    public RedisManager redisManager() {
-        RedisManager redisManager = new RedisManager();
-        redisManager.setHost(redisHost);
-        redisManager.setDatabase(database);
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxIdle(maxIdle);
-        jedisPoolConfig.setMinIdle(minIdle);
-        redisManager.setJedisPoolConfig(jedisPoolConfig);
-        return redisManager;
-    }
-
-    @Bean
-    public RedisSessionDAO redisSessionDAO() {
-        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisManager(redisManager());
-        return redisSessionDAO;
-    }
-
-    /**
-     * 使用redis管理缓存 , 主要是存储用户的授权信息
-     */
-    @Bean
-    public RedisCacheManager redisCacheManager() {
-        RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(redisManager());
-        return redisCacheManager;
-    }
-
-
 }

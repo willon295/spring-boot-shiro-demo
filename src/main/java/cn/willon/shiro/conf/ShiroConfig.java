@@ -1,6 +1,7 @@
 package cn.willon.shiro.conf;
 
-import cn.willon.shiro.conf.realm.CustomRealm;
+import cn.willon.shiro.realm.CustomRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.text.IniRealm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -42,8 +43,6 @@ public class ShiroConfig {
     private String iniConfPath;
     @Value("${shiro.use-ini-realm}")
     private Boolean useIniRealm;
-
-
 
 
     /**
@@ -105,7 +104,7 @@ public class ShiroConfig {
 
 
     /**
-     *  SessionDAO
+     * SessionDAO
      */
     @Bean
     public RedisSessionDAO sessionDAO() {

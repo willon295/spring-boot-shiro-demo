@@ -1,4 +1,5 @@
 package cn.willon.shiro.bean;
+
 import lombok.Data;
 
 /**

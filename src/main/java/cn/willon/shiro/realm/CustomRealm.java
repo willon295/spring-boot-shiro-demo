@@ -1,4 +1,4 @@
-package cn.willon.shiro.conf.realm;
+package cn.willon.shiro.realm;
 
 import cn.willon.shiro.bean.Role;
 import cn.willon.shiro.bean.User;
@@ -12,6 +12,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 public class CustomRealm extends AuthorizingRealm {
 
 
-    private static final String CUSTOM_REALM = "customRealm";
     @Resource
     private UserMapper userMapper;
 
@@ -49,7 +49,7 @@ public class CustomRealm extends AuthorizingRealm {
         char[] credentials = (char[]) token.getCredentials();
         String password = String.valueOf(credentials);
         User user = userMapper.get(username, password);
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, password, CUSTOM_REALM);
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, password, getName());
         if (user != null) {
             return info;
         } else {

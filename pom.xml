@@ -7,9 +7,7 @@
     <artifactId>shiro</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-
     <name>shiro</name>
-    <description>Demo project for Spring Boot</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
